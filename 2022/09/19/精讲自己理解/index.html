@@ -1,0 +1,463 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="极度简单."><meta name="renderer" content="webkit"><meta name="copyright" content="极度简单."><meta name="keywords" content="Onece || Aaras"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Mr.One'ce Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
+
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
+
+
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 6.1.0"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/1.webp"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">极度简单.</div><div class="profile-signature">既然不开心也是一天，开心也是一天，那为什么要不开心呢~</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 100vh;background-image: url(/img/intro/1.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.One'ce Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1 class="post-title"></h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2022-09-19</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h1 id="js基础部分"><a href="#js基础部分" class="headerlink" title="js基础部分"></a>js基础部分</h1><h2 id="变量是什么？"><a href="#变量是什么？" class="headerlink" title="- 变量是什么？"></a>- 变量是什么？</h2><pre><code>可变化的量，由变量名和变量值组成，名称是标识，值是可以变化的，一个变量对应一块小内存。拿var a = 1来说， a相当于这块内存的标识名称，用于查找这块内存，变量值就是1就是内存中保存的数据，可以通过访问a去找到这个数据
+</code></pre>
+<h2 id="基本类型变量与引用类型变量的区别是什么？"><a href="#基本类型变量与引用类型变量的区别是什么？" class="headerlink" title="- 基本类型变量与引用类型变量的区别是什么？"></a>- 基本类型变量与引用类型变量的区别是什么？</h2><pre><code>基本数据类型数据存放在堆内存中，引用数据类型存放在堆内存中的是地址值，数据是存放在栈内存中，通过访问地址值去访问数据
+</code></pre>
+<h2 id="函数传参到底是值传递还是引用传递？"><a href="#函数传参到底是值传递还是引用传递？" class="headerlink" title="- 函数传参到底是值传递还是引用传递？"></a>- 函数传参到底是值传递还是引用传递？</h2><pre><code>1.函数调用时，是将实参变量的数据拷贝一份赋值给形参变量
+2.只是实参变量数据可能是基本数据类型，也可能是引用数据类型
+</code></pre>
+<h2 id="说说你对作用域和作用域链的理解"><a href="#说说你对作用域和作用域链的理解" class="headerlink" title="- 说说你对作用域和作用域链的理解"></a>- 说说你对作用域和作用域链的理解</h2><pre><code>作用域的话就是一个变量可以合法使用的范围或区域，有分为全局作用域和局部作用域，局部作用域又有函数作用域和块级作用域，块级作用域必须是使用了const或let才产生的，作用域起到隔离变量，避免了变量重名冲突的问题，就是允许了不同作用域中可以有重名的变量，作用域可能有嵌套关系，在内部作用域里面查找某一个变量的时候，它的查找顺序是先找自身有没有变量，如果没有就由内向外查找，一直找到全局为止，如果全局找不到就会报错，这就形成了作用域链
+</code></pre>
+<h2 id="说说变量提升与函数提升"><a href="#说说变量提升与函数提升" class="headerlink" title="- 说说变量提升与函数提升"></a>- 说说变量提升与函数提升</h2><pre><code>1.变量提升就是变量声明提升，在变量声明语句前就可以访问到这个变量，只是值为undefined
+2.函数提升就是函数声明提升，在函数声明语句之前就可以调用执行该函数，因为在执行全局代码和函数前会进行预解析，将var声明的变量和函数声明都会放在最前面执行
+</code></pre>
+<h2 id="你说说对js中闭包的理解"><a href="#你说说对js中闭包的理解" class="headerlink" title="- 你说说对js中闭包的理解"></a>- 你说说对js中闭包的理解</h2><pre><code>闭包就是函数嵌套函数，然后内部函数可以访问外部函数的变量，当调用外部函数时就会产生闭包，作用是防止变量污染，延长局部变量的生命周期，让函数外部能反复间接操作内部的局部变量。如果没有及时的释放闭包，会造成内存的泄露，如果内存泄露多了的话，可能会造成内存溢出。但是现在的垃圾回收机制就不存在闭包引起的内存泄露，只有在7--8年前的电脑才会出现这个问题。（内部函数会将地址值返回出去，外部通过一个变量接收并调用）常见的闭包有防抖和节流函数。
+</code></pre>
+<ul>
+<li>写一个简单的闭包<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">function</span> <span class="title function_">fn1</span>(<span class="params"></span>) &#123;</span><br><span class="line">    <span class="keyword">var</span> a = <span class="number">2</span>;</span><br><span class="line">    <span class="keyword">function</span> <span class="title function_">fn2</span>(<span class="params"></span>) &#123;</span><br><span class="line">       a++;</span><br><span class="line">       <span class="variable language_">console</span>.<span class="title function_">log</span>(a);</span><br><span class="line">    &#125;</span><br><span class="line">	<span class="keyword">return</span> fn2;</span><br><span class="line">&#125;   </span><br><span class="line"><span class="keyword">var</span> f = <span class="title function_">fn1</span>();</span><br><span class="line"><span class="title function_">f</span>();</span><br><span class="line"><span class="title function_">f</span>();</span><br><span class="line">f = <span class="literal">null</span></span><br></pre></td></tr></table></figure></li>
+</ul>
+<h2 id="防抖和节流"><a href="#防抖和节流" class="headerlink" title="- 防抖和节流"></a>- 防抖和节流</h2><pre><code>节流是多次变少次，防抖是多次变一次，主要解决如果更新界面，界面更新卡顿与发送ajax请求过多，造成很多没必要的请求，导致服务器压力过大，主要应用场景DOM元素的实现（mousemove），疯狂点击(click),输入框实时搜索联想(keyup/input)
+</code></pre>
+<h2 id="深浅拷贝"><a href="#深浅拷贝" class="headerlink" title="- 深浅拷贝"></a>- 深浅拷贝</h2><pre><code>深浅拷贝是对于引用数据类型来说的，浅拷贝拷贝的是地址值，我们修改拷贝后的数据会影响到原数据，深拷贝拷贝的是具体的数据，我们修改拷贝后的数据不会影响到原数据
+</code></pre>
+<h2 id="垃圾回收机制"><a href="#垃圾回收机制" class="headerlink" title="- 垃圾回收机制"></a>- 垃圾回收机制</h2><pre><code>浏览器有一个专门的线程，它主要工作是判断一个对象是否是垃圾对象，如果是清除其内存数据，并标记内存为空闲状态，它有两种方法，最初级的是引用计数法，现在都不用了，把“对象是否不再需要”简化定义为“对象有没有引用指向它”，每个对象内部都标记一下引用它的总个数，如果引用个数为0时，即为垃圾对象，还有一个方法是当前垃圾回收算法的基础，称为标记清除法，是把“对象是否不再需要”简化定义为“对象是否可以获得”，它是从根对象（也就是window）开始查找所有引用的对象，并标记为“使用中” ，没有标记为使用中的就是垃圾对象
+</code></pre>
+<h2 id="内存溢出和内存泄露"><a href="#内存溢出和内存泄露" class="headerlink" title="- 内存溢出和内存泄露"></a>- 内存溢出和内存泄露</h2><pre><code>当程序中某个内存数据不再需要使用，但是未及时释放会造成内存泄露，常见的情况有，意外的全局变量，没有及时清除的定时器，没有及时解绑的监听，没有及时释放的闭包，这些造成内存泄露堆积过多的话最终会导致内存溢出，内存溢出是运行程序超过了系统分配的最大剩余内存。
+</code></pre>
+<h2 id="this的指向问题"><a href="#this的指向问题" class="headerlink" title="- this的指向问题"></a>- this的指向问题</h2><pre><code>1.一般情况下：
+fn(): 函数直接调用 ---&gt; this是指向window
+new fn(): new调用 ---&gt; this是指向新创建的对象
+obj.fn(): 通过对象调用 ---&gt; this是指向obj
+箭头函数 ---&gt; 没有自己的this，this指向是外部作用域的this
+fn.call/apply:通过对象的call或apply方法 ---&gt; this指向的是方法的第一个参数
+2.特殊情况下:
+bind方法返回的函数 ---&gt; this指向的是方法的第一个参数
+回调函数（它不是我们调用的，但是最后却执行了）
+定时器/ajax/promise/数组遍历相关的方法回调 ---&gt; this指向是window
+vue控制的回调函数 ---&gt; this指向是组件的实例
+react控制的生命周期回调，事件监听回调 ---&gt; this指向是组件对象/undefined
+</code></pre>
+<h2 id="如何改变函数中的this指向"><a href="#如何改变函数中的this指向" class="headerlink" title="- 如何改变函数中的this指向"></a>- 如何改变函数中的this指向</h2><pre><code>1.bind方法
+2.将this保存一份然后使用
+3.使用箭头函数
+</code></pre>
+<h2 id="new关键字的作用"><a href="#new关键字的作用" class="headerlink" title="- new关键字的作用"></a>- new关键字的作用</h2><pre><code>1.开辟空间
+2.修改this指向
+3.执行函数
+4.添加proto，指向函数的显式原型对象
+5.返回this
+</code></pre>
+<h2 id="说说你对原型和原型链的理解"><a href="#说说你对原型和原型链的理解" class="headerlink" title="- 说说你对原型和原型链的理解"></a>- 说说你对原型和原型链的理解</h2><pre><code>1.原型就是每个函数都有一个显示原型属性：prototype
+2.每个实例对象都有一个隐式原型：__proto__
+3.实例对象的__proto__与对应函数的prototype都指向原型对象
+4.原型对象上有一个constructor属性指向对应的构造函数
+原型链就是从对象的隐式原型开始，连接的所有对象，所以也可称为隐式原型链，在查找对象属性或调用对象方法时，会先在对象自身上查找，找不到就会沿着原型链查找，利用原型链可以实现继承
+</code></pre>
+<h2 id="检测数据类型的方式"><a href="#检测数据类型的方式" class="headerlink" title="- 检测数据类型的方式"></a>- 检测数据类型的方式</h2><ul>
+<li>typeof:<ul>
+<li>typeof:返回的是数据类型的字符串表达形式</li>
+</ul>
+</li>
+<li>instanceof&#x2F;constructor<ul>
+<li>不能判断基本数据类型,可以检测数组和正则</li>
+</ul>
+</li>
+<li>Object.prototype.toString<ul>
+<li>可以通过Object.prototype.toString方法，判断某个对象值属于哪种内置类型</li>
+<li>分为null、string、boolean、number、undefined、array、function、object、date、math</li>
+</ul>
+</li>
+</ul>
+<h2 id="编码实现继承"><a href="#编码实现继承" class="headerlink" title="- 编码实现继承"></a>- 编码实现继承</h2><pre><code>继承有构造函数继承，原型继承，原型继承会改变子类构造器，组合继承
+</code></pre>
+<ul>
+<li>构造继承<ul>
+<li>Person.call(this,name,age)</li>
+</ul>
+</li>
+<li>构造继承优缺点:<ul>
+<li>优点：多继承，call调用强行将this指向当前子类</li>
+<li>缺点：只能继承构造函数内的私有属性和方法，每个类都需要call调用一次父类，影响性能</li>
+</ul>
+</li>
+<li>原型继承<ul>
+<li>Student.prototype &#x3D; new Person()</li>
+<li>注：这里改变子类的原型，子类的构造器为父类的，所以要修改回来</li>
+<li>Student.prototype.constructor &#x3D; Student</li>
+</ul>
+</li>
+<li>原型继承优缺点:<ul>
+<li>优点：简单，与父类共享原型</li>
+<li>缺点：父类实例对象会覆盖子类的原型对象,无法多继承</li>
+</ul>
+</li>
+<li>组合继承：(构造继承+原型继承+改变子类构造器)</li>
+<li>组合继承优缺点:<ul>
+<li>优点：原型指向问题解决了多继承问题</li>
+<li>缺点：调用两次构造函数，生成两份实例，浪费性能</li>
+</ul>
+</li>
+</ul>
+<h2 id="面向对象的三大特征"><a href="#面向对象的三大特征" class="headerlink" title="- 面向对象的三大特征"></a>- 面向对象的三大特征</h2><pre><code>封装，继承，多态。封装是将可复用的代码用一个结构包装起来，后面可以反复使用，继承是为了复用代码，从而减少编码，多态就是多种形态
+</code></pre>
+<h2 id="同步与异步的区别"><a href="#同步与异步的区别" class="headerlink" title="- 同步与异步的区别"></a>- 同步与异步的区别</h2><pre><code>js是单线程编程语言，同步会阻塞代码执行，异步不会阻塞代码执行，同步是从上往下按顺序依次执行的，只有将一个任务完全执行完后，才会执行后面的，所以会阻塞后面的代码执行，异步是js通过事件循环机制来实现js的单线程异步，启动任务后，立即向下执行，等同步代码执行完后才执行回调函数，不会阻塞后面的代码执行，异步回调函数会即使触发了，也是要先放入队列中等待执行，只有等同步任务或前面的异步任务执行完才执行
+</code></pre>
+<h2 id="宏任务和微任务"><a href="#宏任务和微任务" class="headerlink" title="- 宏任务和微任务"></a>- 宏任务和微任务</h2><pre><code>异步代码也分为先后,先执行微任务再执行宏任务
+1.先执行主线程的同步代码直到结束,如果遇到微任务则放入微任务队列,如果遇到宏任务则交给对应的模块管理
+2.检查微任务队列,并执行微任务中的回调函数,直到全部执行完成
+3.执行宏任务中的异步代码,当执行的过程中遇到了微任务,则继续放入微任务队列
+4.每次执行完一个宏任务的时候,都会再次检查微任务队列,执行微任务直到结束
+5.继续轮询宏任务...
+</code></pre>
+<h2 id="事件轮询机制"><a href="#事件轮询机制" class="headerlink" title="- 事件轮询机制"></a>- 事件轮询机制</h2><pre><code>代码分为同步代码和异步代码，js执行代码的顺序是先异步（整个script是异步的）再执行同步代码（script内部的代码），再执行异步代码（常见的异步回调），在执行主线程的过程中，如果遇到了异步代码，则把异步代码的回调函数交给浏览器的事件管理模块管理（DOM管理模块/ajax管理模块/定时器管理模块），浏览器的管理模块对事件进行监听，当回调函数已经达到条件需要执行的时候，会把回调函数依次放入回调队列，当主线程的同步代码执行完毕后，会轮询回调队列，依次执行回调队列中的回调函数
+</code></pre>
+<h2 id="说说对promise的理解"><a href="#说说对promise的理解" class="headerlink" title="- 说说对promise的理解"></a>- 说说对promise的理解</h2><pre><code>promise是ES6中新推出的异步编程解决方案，通过promise.then的链式调用方法，解决嵌套回调的回调地狱问题，在它推出之前的异步语法都是用的宏任务，它是用的微任务，并且指定读取结构数据的回调函数时机更灵活，可以在请求前/请求后/请求完成后去指定，promise是有三种状态的分别是pending（等待状态），resolved/fulfilled（成功状态），rejected（失败状态）promise的状态改变有两种，是从等待状态变为成功或失败状态，只会改变一次是不可逆的，改变promise的状态方法得调用resolve(),reject()或主动抛出throw error
+</code></pre>
+<h2 id="promise的then-的理解"><a href="#promise的then-的理解" class="headerlink" title="- promise的then()的理解"></a>- promise的then()的理解</h2><pre><code>.then()方法总是返回一个新的promise，新的promise的结果状态由then指定的回调函数执行的结果决定，有主动抛出错误，调用resolve(),reject()方法或直接return一个值
+</code></pre>
+<h2 id="promise的all-的理解"><a href="#promise的all-的理解" class="headerlink" title="- promise的all()的理解"></a>- promise的all()的理解</h2><pre><code>all()方法，批量一次发送多个异步请求，当都成功时返回一个数组，数组里面存储所有成功promise的结果，要是有一个失败的话，返回值就是失败的那个promise的值
+</code></pre>
+<h2 id="promise的race-理解"><a href="#promise的race-理解" class="headerlink" title="- promise的race()理解"></a>- promise的race()理解</h2><pre><code>race()方法，返回值是不论成功或失败只返回响应最快的那一个请求
+</code></pre>
+<h2 id="async-x2F-await方法"><a href="#async-x2F-await方法" class="headerlink" title="async&#x2F;await方法"></a>async&#x2F;await方法</h2><pre><code>async和await是消灭异步回调的终极解决方案，能简化promise对象的使用，不用再使用.then/.catch来指定回调函数，它和promise并不互斥，两者相辅相成。async函数的返回值是promise对象，await等待的是一个promise，如果await等待的是一个基本数据，就会直接返回这个数据
+</code></pre>
+<h2 id="ES6新特性"><a href="#ES6新特性" class="headerlink" title="ES6新特性"></a>ES6新特性</h2><ol>
+<li>块级作用域</li>
+<li>解构赋值</li>
+<li>模板字符串</li>
+<li>箭头函数</li>
+<li>扩展运算符</li>
+<li>class类</li>
+<li>模块化语法 export是暴露 import能动态导入，拆分打包，用于懒加载</li>
+<li>异步语法</li>
+<li>Set和Map</li>
+<li>代理Proxy</li>
+</ol>
+<h2 id="模块化和组件化"><a href="#模块化和组件化" class="headerlink" title="模块化和组件化"></a>模块化和组件化</h2><h2 id="重绘和重排"><a href="#重绘和重排" class="headerlink" title="重绘和重排"></a>重绘和重排</h2><pre><code>不会影响元素的布局改变只会重绘，重绘是浏览器会重新绘制受影响的部分到屏幕的过程。因为元素的尺寸、布局、隐藏等等改变引起页面的重新渲染，这个过程称为重排，重排肯定会引起重绘，但是重绘不一定会引发重排，一个元素的重排会带来一系列的反应，甚至触发整个文档的重排和重绘，性能代价是高昂的。
+</code></pre>
+<h2 id="事件冒泡的流程"><a href="#事件冒泡的流程" class="headerlink" title="事件冒泡的流程"></a>事件冒泡的流程</h2><pre><code>事件的执行过程为捕获、目标、冒泡，事件在目标元素上处理后，会由内向外逐层传递给所有外层元素处理，主要用于事件代理事件委托
+</code></pre>
+<h2 id="说说你对ajax的理解"><a href="#说说你对ajax的理解" class="headerlink" title="说说你对ajax的理解"></a>说说你对ajax的理解</h2><pre><code>ajax请求是一种特别的http请求，对服务器端来说，没有任何区别，区别在浏览器端，浏览器端发请求：只有xhr/fetch发出的才是ajax请求，其他所有的都是非ajax请求，浏览器端接收到响应，浏览器一般会直接显示响应体数据，也就是我们常说的刷新/跳转页面，如果是ajax请求，浏览器中ajax引擎不会对页面进行任何更新操作，只是调用监视的回调函数并传入响应相关数据
+</code></pre>
+<h2 id="响应状态码（要添加）"><a href="#响应状态码（要添加）" class="headerlink" title="响应状态码（要添加）"></a>响应状态码（要添加）</h2><pre><code>1XX：请求正在处理中
+2XX：请求成功
+3XX：需要重定向，浏览器直接跳转
+4XX：客户端请求错误
+5XX：服务器端错误
+</code></pre>
+<h2 id="封装一个简易的ajax请求"><a href="#封装一个简易的ajax请求" class="headerlink" title="封装一个简易的ajax请求"></a>封装一个简易的ajax请求</h2><pre><code>1.创建一个xhr对象（XMLHttpRequest）
+const xhr = new XMLHttpRequest()
+2.初始化一个异步请求（这时还没发请求）
+xhr.open(&quot;方式&quot;,&quot;地址&quot;,&quot;是否异步，默认为true&quot;)
+3.发送请求
+xhr.send()
+4.监听服务器返回的结果 
+xhr.onreadystate
+5.判断服务器是否返回了所有结果
+if(xhr.readyState === 4)&#123;&#125;
+6.成功之后判断返回的响应状态码是否大于等于200小于300,没问题就打印响应体
+if(xhr.status &gt;= 200 &amp;&amp; xhr.status &lt; 300)；
+</code></pre>
+<h2 id="跨域"><a href="#跨域" class="headerlink" title="跨域"></a>跨域</h2><pre><code>跨域就是违背了同源策略，发送ajax请求时，浏览器要求当前网页和服务器必须同源，否则会抛出跨域错误，而同源就是协议，域名，端口三者都相同，解决跨域的第一种方式是JSONP，是通过script标签进行发请求，因为script标签不受同源策略限制，缺点是只能发送get请求，第二种方式是cors，服务器返回一个响应头允许浏览器跨域，第三种方式是配置代理，在webpack里的dev-server中配置proxy，在vue2中的vue.config.js,在vue3中是在vite.config.js中配置，发请求是向本地的代理服务器发送请求，代理服务器转发请求到相应的接口上去
+</code></pre>
+<h2 id="axios的二次封装"><a href="#axios的二次封装" class="headerlink" title="axios的二次封装"></a>axios的二次封装</h2><pre><code>使用axios的create方法创建实例对象，去配置通用的基础路径和请求超时时间，在请求拦截器中携带token和用户临时ID利用它去做购物车处理，也可以在里面配置进度条功能，响应拦截器分为成功的回调和失败的回调，我们可以在成功或失败的回调里结束进度条，在成功的回调中可以返回response.data，可以让具体请求简单一些，在失败的回调中对失败进行统一提示，对token过期的错误进行处理，如果判断响应状态码为401就清除之前的token去跳转到登录页，并提示登录过期需要重新登录
+</code></pre>
+<h2 id="get请求和post请求的区别"><a href="#get请求和post请求的区别" class="headerlink" title="get请求和post请求的区别"></a>get请求和post请求的区别</h2><pre><code>get是获取数据的,而post是提交数据的
+GET可以缓存,而POST不可缓存
+post发送的数据更大,get有url长度限制
+post能发送更多的数据类型(get只能发送ASCll字符)
+</code></pre>
+<h2 id="从输入url到渲染出页面的整个过程"><a href="#从输入url到渲染出页面的整个过程" class="headerlink" title="从输入url到渲染出页面的整个过程"></a>从输入url到渲染出页面的整个过程</h2><pre><code>1. DNS查询/解析：将域名地址解析成ip地址
+2. TCP连接:TCP三次握手
+3. 发送请求
+4. 返回响应
+5. 渲染页面(浏览器渲染流程相当于是把这步进行详细说明)
+6. 断开连接：TCP四次挥手
+</code></pre>
+<h2 id="浏览器渲染流程"><a href="#浏览器渲染流程" class="headerlink" title="浏览器渲染流程"></a>浏览器渲染流程</h2><pre><code>1. 根据结构生成DOM树
+2. 根据样式生成CSSOM数
+3. 结合DOM树和CSSOM数生成render Tree(渲染树)
+4. 对渲染树中的结构进行分层，生成图层树
+5. 根据图层树，生成图层的绘制指令
+6. 栅格化：将图层划分为图块
+7. 绘制和展示
+</code></pre>
+<h2 id="浏览器三次握手"><a href="#浏览器三次握手" class="headerlink" title="浏览器三次握手"></a>浏览器三次握手</h2><pre><code>TCP协议，在发送数据前，通信双方必须在彼此间建立一条连接，三次握手就是建立连接时发送的三次数据包，三次握手的意义在于确保通信双方都能确定对方的接收和发送能力都正常，过程：
+1.客户端向服务端发送一个syn(请求)数据包，请求连接
+2.服务端接收到客户端的syn数据包(服务端确定客户端发送能力正常),服务端向客户端发送syn+ack(应答)数据包
+3.客户端接收服务端的数据包(客户端确定服务端的发送和接收能力正常)，客户端向服务端发送ack数据包
+4.服务端接收ack数据包(确定客户端接收能力正常)
+</code></pre>
+<h2 id="浏览器四次挥手"><a href="#浏览器四次挥手" class="headerlink" title="浏览器四次挥手"></a>浏览器四次挥手</h2><pre><code>TCP的连接拆除需要发送四个包，因此称为四次挥手
+TCP是双向的，所以需要在两个方向分别关闭，每个方向的关闭又需要请求和确认，所以一共就4次，过程：
+1.客户端发送Fin(释放连接)字段请求断开连接
+2.服务端发送ack字段应答断开请求
+3.服务端等数据全部处理完毕，发送Fin字段请求断开连接
+4.客户端发送ack字段应答断开请求
+</code></pre>
+<h2 id="浏览器的强缓存与协商缓存"><a href="#浏览器的强缓存与协商缓存" class="headerlink" title="浏览器的强缓存与协商缓存"></a>浏览器的强缓存与协商缓存</h2><pre><code>浏览器的强缓存简单来讲,就是浏览器直接使用自己的缓存,不进行任何的请求，协商缓存就是强制缓存失效后，浏览器携带缓存标识向服务器发起请求，由服务器根据缓存标识觉得是否使用缓存的过程(命中状态码为304)
+</code></pre>
+<h2 id="区别HTTP与HTTPS"><a href="#区别HTTP与HTTPS" class="headerlink" title="区别HTTP与HTTPS"></a>区别HTTP与HTTPS</h2><pre><code>1.http协议的数据传输都是明文，如果攻击者截取了传输报文，就可以直接读懂其中的信息，不适合传输一些敏感信息，如密码等
+2.https协议是http的升级版，通过和SSL或TLS组合使用进行加密http的内容，是带加密传输，身份认证的网络协议，要比http协议安全
+</code></pre>
+<h2 id="前台数据存储"><a href="#前台数据存储" class="headerlink" title="- 前台数据存储"></a>- 前台数据存储</h2><pre><code>存储方式有三种：cookie(会话，持久化），sessionStorage，localStorage（后面两种都是h5之后出来的新特性）
+</code></pre>
+<h3 id="sessionStorage与localStorage"><a href="#sessionStorage与localStorage" class="headerlink" title="- sessionStorage与localStorage"></a>- sessionStorage与localStorage</h3><pre><code>浏览器刷新，两个存储都在，浏览器关闭重新打开后，sessionStorage中数据不在，localStorage的还在
+</code></pre>
+<h3 id="cookie跟sessionStorage与localStorage的差别"><a href="#cookie跟sessionStorage与localStorage的差别" class="headerlink" title="- cookie跟sessionStorage与localStorage的差别"></a>- cookie跟sessionStorage与localStorage的差别</h3><pre><code>sessionStorage与localStorage某种程度上来说是用来代替cookie，因为cookie分为会话cookie和持久化cookie两种，会话cookie与sessionStorage很像，持久化cookie与localStorage很像，但是有一定差别，cookie容量小，其他两个存储方式大，cookie请求时会自动携带，cookie使用起来复杂，浏览器可以禁用cookie，但是对sessionStorage和localStorage不行，这就是我的理解，如果公司有这方面的需求，我会在网上找资料再进行学习学习
+</code></pre>
+<h2 id="手写代码"><a href="#手写代码" class="headerlink" title="手写代码"></a>手写代码</h2><pre><code>1.函数的call()/apply()/bind()
+2.函数的节流(throttle)防抖(debounce)
+3.数组去重(unique)
+4.数组扁平化(flatten)
+5.深拷贝
+6.自定义new和instanceof工具函数
+7.字符串处理
+8.简单的排序：冒泡、选择、插入(必须要会一个)
+</code></pre>
+<h2 id="webpack五大护法"><a href="#webpack五大护法" class="headerlink" title="webpack五大护法"></a>webpack五大护法</h2><pre><code>1.Entry：入口起点(entry point)
+打包时，第一个被访问的源码文件，指示webpack应该使用哪个模块(webpack中一切都是模块)，来作为构建其内部依赖图的开始。webpack可以通过入口，加载整个项目依赖
+2.Output：出口
+打包后，输出的文件目录
+3.Loader：加载器
+loader让webpack能够去处理那些非JavaScript文件(webpack自身只能解析JavaScript)
+4.plugins：插件
+实现loader之外的其他功能(打包优化和压缩等)
+5.Mode：模式
+生产模式production
+开发模式development
+</code></pre>
+<h1 id="Vue面试题———————————————————————————————————————"><a href="#Vue面试题———————————————————————————————————————" class="headerlink" title="Vue面试题———————————————————————————————————————"></a>Vue面试题———————————————————————————————————————</h1><h2 id="vue的优点是什么"><a href="#vue的优点是什么" class="headerlink" title="vue的优点是什么"></a>vue的优点是什么</h2><pre><code>低耦合，可复用，独立开发，可测试
+</code></pre>
+<h2 id="v-if和v-show的区别"><a href="#v-if和v-show的区别" class="headerlink" title="v-if和v-show的区别"></a>v-if和v-show的区别</h2><pre><code>v-if为false的时候，是直接销毁的，v-show为false的时候结构还在只是通过样式来隐藏掉不占位，v-if为true的时候需要重新创建标签对象，v-show只需要修改样式显示出来就可以，v-show重新显示更快，但隐藏时还占用着内存空间，是以空间换时间的做法，如果需要频繁切换并且DOM结构比较大的话，使用v-show更好，v-if解决模板中初始解析undefined的bug
+</code></pre>
+<h2 id="computed和watch的区别"><a href="#computed和watch的区别" class="headerlink" title="computed和watch的区别"></a>computed和watch的区别</h2><pre><code>1.计算属性必须同步返回计算结果，而watch中可以在异步操作后更新数据显示
+2.watch可以深度监视，计算属性只是监视了使用到的数据
+3.computed能实现的watch也能实现，而watch能实现的，computed不一定能实现
+使用的选择：
+    1.如果是根据已有的数据同步计算出一个新的数据用computed
+    2.如果涉及到异步操作或深度监视用watch
+    3.一旦数据发生变化，需要做一系列的操作用watch
+computed和watch最大的区别，是在于computed的get和watch，跟set没关系。computed是需要同步返回数据的，watch不需要返回数据，因此可以异步进行赋值，所以computed内部不能有异步
+</code></pre>
+<h2 id="computed和methods的区别"><a href="#computed和methods的区别" class="headerlink" title="computed和methods的区别"></a>computed和methods的区别</h2><pre><code>computed有缓存机制，多次读取显示只计算了一次，methods没有缓存，多处显示计算多次
+</code></pre>
+<h2 id="v-for和v-if能不能一起使用"><a href="#v-for和v-if能不能一起使用" class="headerlink" title="v-for和v-if能不能一起使用"></a>v-for和v-if能不能一起使用</h2><pre><code>可以一起使用但是不推荐，这里有两种情况：
+1.对遍历的数据进行限制判断，如果使用v-if，每个数组元素都会解析指令来判断导致效率低，解决办法是不使用v-if，使用computed，过滤产生一个子数组
+2.对当前标签使用v-if限制是否显示或隐藏，会执行n次导致效率低，解决办法是将v-if添加在父标签上进行使用只执行一次
+</code></pre>
+<h2 id="vue组件的生命周期"><a href="#vue组件的生命周期" class="headerlink" title="vue组件的生命周期"></a>vue组件的生命周期</h2><pre><code>创建阶段
+特点：
+beforeCreate：创建前可以打印到this但是打印不到数据
+created:创建后可以打印到this也可以打印到数据
+他们之间做数据代理和数据劫持
+
+其实创建阶段和挂载阶段统称为初始化阶段
+他们之间其实还做了模板解析
+挂载阶段
+特点：
+beforeMount:挂载前拿不到真实的DOM元素
+mounted:挂载后可以拿到真实的DOM元素
+他们之间把虚拟DOM变为真实DOM
+
+更新阶段
+数据必须有更新才能进入这个阶段，并且可以多次进入
+beforeUpdata：数据更新后，页面更新前，data的数据是一定更新了，页面的数据是没有更新的
+updated:数据更新后，页面更新后，data的数据是一定更新了，页面的数据也更新了
+
+销毁阶段
+必须调用vm.destroy() 或页面刷新 页面关闭 v-if等才能进入销毁阶段
+beforeDestroy：销毁前我们一般都是在这个钩子当中进行善后处理：比如清除定时器，解绑事件等等
+destroyed:销毁后，其实就已经做不了什么了
+
+keep-alive(缓存组件)会产生两个生命周期钩子
+deactivated：组件失活，但是没有死亡
+activated：组件激活，被复用
+
+子组件执行抛出错误
+errorCaptured:用于捕获子组件的错误，return false可以阻止错误向上冒泡
+</code></pre>
+<h2 id="组件深入"><a href="#组件深入" class="headerlink" title="组件深入"></a>组件深入</h2><pre><code>1.动态组件
+特点：
+通过动态确定要显示的组件，:is指定要显示组件的组件名
+is属性初始为A组件名，加载A组件，切换为B组件名，加载B组件，当A组件切换到B组件时，A组件是被销毁
+
+2.缓存组件
+特点：
+默认路由组件离开或动态组件被切换，组件都会立即死亡
+keep-alive能让原本要死亡的组件不死亡，使其缓存起来，后面需要时，直接使用缓存
+可以通过include与exclude属性来控制那些组件要缓存或不缓存
+
+3.异步组件
+特点：
+在引入组件时使用import动态引入：const Home = () =&gt; import(&quot;./Home.vue&quot;)
+组件会被单独打包，且只有在第一次访问是才会请求加载对应的打包文件 ===&gt; 减小首次打包的文件体积
+出来组件，其他模块也可以异步加载，比如路由懒加载和图片懒加载
+</code></pre>
+<h2 id="vue2组件间通信方式"><a href="#vue2组件间通信方式" class="headerlink" title="vue2组件间通信方式"></a>vue2组件间通信方式</h2><pre><code>父子间
+1. props =&gt; 父向子 / 子向父
+2. vue自定义事件 =&gt; 子向父
+3. v-model =&gt; 父子间(数据双向同步)
+4. .sync =&gt; 子向父
+5. $refs,$children =&gt; 父向子
+6. $parent =&gt; 子向父
+7. 插槽 / 作用域插槽 =&gt; 父向子(标签) / 子向父(数据)
+祖孙间
+8. $attrs与$listeners =&gt; 祖向孙 / 孙向祖 v-bind / v-on
+9. provide与inject =&gt; 祖向孙 / 孙向祖
+兄弟或其它/任意
+10. 全局事件总线
+11. Vuex
+</code></pre>
+<h2 id="作用域插槽"><a href="#作用域插槽" class="headerlink" title="作用域插槽"></a>作用域插槽</h2><h2 id="vue3组件间通信方式"><a href="#vue3组件间通信方式" class="headerlink" title="vue3组件间通信方式"></a>vue3组件间通信方式</h2><pre><code>父子间
+1. props =&gt; 父向子 / 子向父
+2. vue自定义事件 =&gt; 子向父
+3. v-model =&gt; 父子间(数据双向同步)
+4. $refs,$children =&gt; 父向子
+5. 插槽 / 作用域插槽 =&gt; 父向子(标签) / 子向父(数据)
+祖孙间
+6. $attrs与$listeners =&gt; 祖向孙 / 孙向祖 v-bind / v-on
+7. provide与inject =&gt; 祖向孙 / 孙向祖
+兄弟或其它/任意
+8. Pubsub v3用不了 因为v3没有this
+9. pinia
+10. Vuex vue3也可以用vue2
+</code></pre>
+<h2 id="区别MVVM与MVC"><a href="#区别MVVM与MVC" class="headerlink" title="区别MVVM与MVC"></a>区别MVVM与MVC</h2><pre><code>MVVM：前台的技术
+M： Model模型, 也就是包含数据的js对象 ==&gt; data对象
+V： View视图，动态显示模型对象中的数据的页面(前台渲染) ==&gt; 模板页面
+VM： ViewModel视图模型, 通过vm读取model中的数据显示到view上, 同时view输入数据改变,
+vm也可以将输入数据保存到model中 ==&gt; Vue/组件的实例
+
+MVC：后台的技术
+M: Model（模型）包含从数据库中查询得到的数据的对象
+V: View（视图）动态显示模型对象中的数据的页面(后台渲染)
+C: Controller（控制器）接收用户提交的请求参数, 操作数据库生成动态数据并产生模型对象
+</code></pre>
+<h2 id="vue响应式数据原理"><a href="#vue响应式数据原理" class="headerlink" title="vue响应式数据原理"></a>vue响应式数据原理</h2><h3 id="vue2的响应式数据原理"><a href="#vue2的响应式数据原理" class="headerlink" title="vue2的响应式数据原理"></a>vue2的响应式数据原理</h3><pre><code>有两种情况：对象和数组两种情况
+对象:通过Object.defineProperty()添加setter方法来监视属性数据的改变 + 订阅-发布模式，Object.defineProperty在vm身上添加和data当中同名的属性，访问vm身上的属性会调用getter方法,返回的其实是data中的同名属性值，修改vm身上的属性会调用setter方法,修改的其实是data中的同名属性数据。
+
+数据监视/劫持：
+做了两件事：
+1.根据data中的属性，对应都创建一个dep对象
+2.会把data当中的数据变为响应式数据，原理还是添加getter和setter方法
+
+数据劫持/监视是通过Object.defineProperty对data所有的属性修改响应式（添加getter和setter），如果访问data里面的属性，就会调用getter方法,返回属性值，如果修改data里面的属性值，就会调用setter方法，修改属性值。、
+setter内部其实做了三个事
+    1、修改自己的数据
+    2、把修改的新数据也递归调用变为响应式
+    3、通知页面去修改数据
+
+数组：重写更新数组元素的一系列方法 + 订阅-发布模式
+数组方法有：
+push pop shift unshift splice sort reverse 7个方法
+</code></pre>
+<h3 id="vue3的响应式数据原理"><a href="#vue3的响应式数据原理" class="headerlink" title="vue3的响应式数据原理"></a>vue3的响应式数据原理</h3><pre><code>核心是通过es6的新特性proxy代理，拦截对data任意属性的任意操作
+</code></pre>
+<h2 id="vue双向数据绑定"><a href="#vue双向数据绑定" class="headerlink" title="vue双向数据绑定"></a>vue双向数据绑定</h2><pre><code>通过v-model来实现双向数据绑定，一般是作用在表单元素上面
+v-model的本质是将动态的data数据通过“:value”属性传给input显示 ==&gt; data到view的绑定
+给input标签绑定“@input”监听，一旦输入改变读取最新的值保存到data对应的属性上 ==&gt; view到data的绑定
+双向数据绑定是在单向数据(data ---&gt; view)的基础，加入input事件监听(view ---&gt; data)
+</code></pre>
+<h2 id="nextTick原理"><a href="#nextTick原理" class="headerlink" title="nextTick原理"></a>nextTick原理</h2><pre><code>在vue中数据是同步更新的，而DOM页面的更新是异步的，如果想要在数据更新后，立即获取更新后的DOM，则就需要使用nextTick方法中的回调函数获取，但是nextTick的回调函数也是异步的这时就要保证nextTick的回调函数是在页面DOM更新后再执行，否则就无法获取最新的DOM元素
+</code></pre>
+<p>​        但是怎么保证这个异步代码的执行顺序问题呢：<br>    vue内部中维护有两个队列，一个是(全局)queue队列和一个callbacks队列，使用nextTick方法可以将它的回调函数放入callbacks队列<br>    其中queue里面存储是watcher的队列，watcher用来更新dom的，这个队列会有一个专门的函数用来遍历queue队列里面所有的watcher，然后会有一个queueWatcher函数调用nextTick方法将这个函数放入callback队列最前面<br>    callbacks队列里则是存放的都是nextTick方法中的回调函数，所以他里面也可能会有多个回调函数，同时他也定义了一个函数，这个函数会遍历callback队列里面的所有回调函数依次执行，最后将这个函数根据情况放入宏任务或者微任务队列中执行，优先放入微任务队列，因为微任务性能更好</p>
+</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://example.com">极度简单.</a></p><p> <span>Link:  </span><a href="http://example.com/2022/09/19/%E7%B2%BE%E8%AE%B2%E8%87%AA%E5%B7%B1%E7%90%86%E8%A7%A3/">http://example.com/2022/09/19/%E7%B2%BE%E8%AE%B2%E8%87%AA%E5%B7%B1%E7%90%86%E8%A7%A3/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="nextSlogan" href="/2022/04/19/less/" title="less笔记"><span>NextPost ></span><br><span class="nextTitle">less笔记</span></a><div class="clear"></div></div><div id="comment"></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a target="_blank" rel="noopener" href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 100vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#js%E5%9F%BA%E7%A1%80%E9%83%A8%E5%88%86"><span class="toc-number">1.</span> <span class="toc-text">js基础部分</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8F%98%E9%87%8F%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.1.</span> <span class="toc-text">- 变量是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9F%BA%E6%9C%AC%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E4%B8%8E%E5%BC%95%E7%94%A8%E7%B1%BB%E5%9E%8B%E5%8F%98%E9%87%8F%E7%9A%84%E5%8C%BA%E5%88%AB%E6%98%AF%E4%BB%80%E4%B9%88%EF%BC%9F"><span class="toc-number">1.2.</span> <span class="toc-text">- 基本类型变量与引用类型变量的区别是什么？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%87%BD%E6%95%B0%E4%BC%A0%E5%8F%82%E5%88%B0%E5%BA%95%E6%98%AF%E5%80%BC%E4%BC%A0%E9%80%92%E8%BF%98%E6%98%AF%E5%BC%95%E7%94%A8%E4%BC%A0%E9%80%92%EF%BC%9F"><span class="toc-number">1.3.</span> <span class="toc-text">- 函数传参到底是值传递还是引用传递？</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E4%BD%9C%E7%94%A8%E5%9F%9F%E5%92%8C%E4%BD%9C%E7%94%A8%E5%9F%9F%E9%93%BE%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.4.</span> <span class="toc-text">- 说说你对作用域和作用域链的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E5%8F%98%E9%87%8F%E6%8F%90%E5%8D%87%E4%B8%8E%E5%87%BD%E6%95%B0%E6%8F%90%E5%8D%87"><span class="toc-number">1.5.</span> <span class="toc-text">- 说说变量提升与函数提升</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%A0%E8%AF%B4%E8%AF%B4%E5%AF%B9js%E4%B8%AD%E9%97%AD%E5%8C%85%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.6.</span> <span class="toc-text">- 你说说对js中闭包的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%98%B2%E6%8A%96%E5%92%8C%E8%8A%82%E6%B5%81"><span class="toc-number">1.7.</span> <span class="toc-text">- 防抖和节流</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B7%B1%E6%B5%85%E6%8B%B7%E8%B4%9D"><span class="toc-number">1.8.</span> <span class="toc-text">- 深浅拷贝</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%9E%83%E5%9C%BE%E5%9B%9E%E6%94%B6%E6%9C%BA%E5%88%B6"><span class="toc-number">1.9.</span> <span class="toc-text">- 垃圾回收机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%86%85%E5%AD%98%E6%BA%A2%E5%87%BA%E5%92%8C%E5%86%85%E5%AD%98%E6%B3%84%E9%9C%B2"><span class="toc-number">1.10.</span> <span class="toc-text">- 内存溢出和内存泄露</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#this%E7%9A%84%E6%8C%87%E5%90%91%E9%97%AE%E9%A2%98"><span class="toc-number">1.11.</span> <span class="toc-text">- this的指向问题</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%A6%82%E4%BD%95%E6%94%B9%E5%8F%98%E5%87%BD%E6%95%B0%E4%B8%AD%E7%9A%84this%E6%8C%87%E5%90%91"><span class="toc-number">1.12.</span> <span class="toc-text">- 如何改变函数中的this指向</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#new%E5%85%B3%E9%94%AE%E5%AD%97%E7%9A%84%E4%BD%9C%E7%94%A8"><span class="toc-number">1.13.</span> <span class="toc-text">- new关键字的作用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9%E5%8E%9F%E5%9E%8B%E5%92%8C%E5%8E%9F%E5%9E%8B%E9%93%BE%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.14.</span> <span class="toc-text">- 说说你对原型和原型链的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A3%80%E6%B5%8B%E6%95%B0%E6%8D%AE%E7%B1%BB%E5%9E%8B%E7%9A%84%E6%96%B9%E5%BC%8F"><span class="toc-number">1.15.</span> <span class="toc-text">- 检测数据类型的方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BC%96%E7%A0%81%E5%AE%9E%E7%8E%B0%E7%BB%A7%E6%89%BF"><span class="toc-number">1.16.</span> <span class="toc-text">- 编码实现继承</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%9D%A2%E5%90%91%E5%AF%B9%E8%B1%A1%E7%9A%84%E4%B8%89%E5%A4%A7%E7%89%B9%E5%BE%81"><span class="toc-number">1.17.</span> <span class="toc-text">- 面向对象的三大特征</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%90%8C%E6%AD%A5%E4%B8%8E%E5%BC%82%E6%AD%A5%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.18.</span> <span class="toc-text">- 同步与异步的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%AE%8F%E4%BB%BB%E5%8A%A1%E5%92%8C%E5%BE%AE%E4%BB%BB%E5%8A%A1"><span class="toc-number">1.19.</span> <span class="toc-text">- 宏任务和微任务</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E8%BD%AE%E8%AF%A2%E6%9C%BA%E5%88%B6"><span class="toc-number">1.20.</span> <span class="toc-text">- 事件轮询机制</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E5%AF%B9promise%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.21.</span> <span class="toc-text">- 说说对promise的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#promise%E7%9A%84then-%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.22.</span> <span class="toc-text">- promise的then()的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#promise%E7%9A%84all-%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.23.</span> <span class="toc-text">- promise的all()的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#promise%E7%9A%84race-%E7%90%86%E8%A7%A3"><span class="toc-number">1.24.</span> <span class="toc-text">- promise的race()理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#async-x2F-await%E6%96%B9%E6%B3%95"><span class="toc-number">1.25.</span> <span class="toc-text">async&#x2F;await方法</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#ES6%E6%96%B0%E7%89%B9%E6%80%A7"><span class="toc-number">1.26.</span> <span class="toc-text">ES6新特性</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%A8%A1%E5%9D%97%E5%8C%96%E5%92%8C%E7%BB%84%E4%BB%B6%E5%8C%96"><span class="toc-number">1.27.</span> <span class="toc-text">模块化和组件化</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E9%87%8D%E7%BB%98%E5%92%8C%E9%87%8D%E6%8E%92"><span class="toc-number">1.28.</span> <span class="toc-text">重绘和重排</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BA%8B%E4%BB%B6%E5%86%92%E6%B3%A1%E7%9A%84%E6%B5%81%E7%A8%8B"><span class="toc-number">1.29.</span> <span class="toc-text">事件冒泡的流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%AF%B4%E8%AF%B4%E4%BD%A0%E5%AF%B9ajax%E7%9A%84%E7%90%86%E8%A7%A3"><span class="toc-number">1.30.</span> <span class="toc-text">说说你对ajax的理解</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%93%8D%E5%BA%94%E7%8A%B6%E6%80%81%E7%A0%81%EF%BC%88%E8%A6%81%E6%B7%BB%E5%8A%A0%EF%BC%89"><span class="toc-number">1.31.</span> <span class="toc-text">响应状态码（要添加）</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%B0%81%E8%A3%85%E4%B8%80%E4%B8%AA%E7%AE%80%E6%98%93%E7%9A%84ajax%E8%AF%B7%E6%B1%82"><span class="toc-number">1.32.</span> <span class="toc-text">封装一个简易的ajax请求</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E8%B7%A8%E5%9F%9F"><span class="toc-number">1.33.</span> <span class="toc-text">跨域</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#axios%E7%9A%84%E4%BA%8C%E6%AC%A1%E5%B0%81%E8%A3%85"><span class="toc-number">1.34.</span> <span class="toc-text">axios的二次封装</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#get%E8%AF%B7%E6%B1%82%E5%92%8Cpost%E8%AF%B7%E6%B1%82%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">1.35.</span> <span class="toc-text">get请求和post请求的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BB%8E%E8%BE%93%E5%85%A5url%E5%88%B0%E6%B8%B2%E6%9F%93%E5%87%BA%E9%A1%B5%E9%9D%A2%E7%9A%84%E6%95%B4%E4%B8%AA%E8%BF%87%E7%A8%8B"><span class="toc-number">1.36.</span> <span class="toc-text">从输入url到渲染出页面的整个过程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E6%B8%B2%E6%9F%93%E6%B5%81%E7%A8%8B"><span class="toc-number">1.37.</span> <span class="toc-text">浏览器渲染流程</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E4%B8%89%E6%AC%A1%E6%8F%A1%E6%89%8B"><span class="toc-number">1.38.</span> <span class="toc-text">浏览器三次握手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E5%9B%9B%E6%AC%A1%E6%8C%A5%E6%89%8B"><span class="toc-number">1.39.</span> <span class="toc-text">浏览器四次挥手</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%B5%8F%E8%A7%88%E5%99%A8%E7%9A%84%E5%BC%BA%E7%BC%93%E5%AD%98%E4%B8%8E%E5%8D%8F%E5%95%86%E7%BC%93%E5%AD%98"><span class="toc-number">1.40.</span> <span class="toc-text">浏览器的强缓存与协商缓存</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%ABHTTP%E4%B8%8EHTTPS"><span class="toc-number">1.41.</span> <span class="toc-text">区别HTTP与HTTPS</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%89%8D%E5%8F%B0%E6%95%B0%E6%8D%AE%E5%AD%98%E5%82%A8"><span class="toc-number">1.42.</span> <span class="toc-text">- 前台数据存储</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#sessionStorage%E4%B8%8ElocalStorage"><span class="toc-number">1.42.1.</span> <span class="toc-text">- sessionStorage与localStorage</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#cookie%E8%B7%9FsessionStorage%E4%B8%8ElocalStorage%E7%9A%84%E5%B7%AE%E5%88%AB"><span class="toc-number">1.42.2.</span> <span class="toc-text">- cookie跟sessionStorage与localStorage的差别</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E6%89%8B%E5%86%99%E4%BB%A3%E7%A0%81"><span class="toc-number">1.43.</span> <span class="toc-text">手写代码</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#webpack%E4%BA%94%E5%A4%A7%E6%8A%A4%E6%B3%95"><span class="toc-number">1.44.</span> <span class="toc-text">webpack五大护法</span></a></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#Vue%E9%9D%A2%E8%AF%95%E9%A2%98%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94%E2%80%94"><span class="toc-number">2.</span> <span class="toc-text">Vue面试题———————————————————————————————————————</span></a><ol class="toc-child"><li class="toc-item toc-level-2"><a class="toc-link" href="#vue%E7%9A%84%E4%BC%98%E7%82%B9%E6%98%AF%E4%BB%80%E4%B9%88"><span class="toc-number">2.1.</span> <span class="toc-text">vue的优点是什么</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-if%E5%92%8Cv-show%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.2.</span> <span class="toc-text">v-if和v-show的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#computed%E5%92%8Cwatch%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.3.</span> <span class="toc-text">computed和watch的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#computed%E5%92%8Cmethods%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="toc-number">2.4.</span> <span class="toc-text">computed和methods的区别</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#v-for%E5%92%8Cv-if%E8%83%BD%E4%B8%8D%E8%83%BD%E4%B8%80%E8%B5%B7%E4%BD%BF%E7%94%A8"><span class="toc-number">2.5.</span> <span class="toc-text">v-for和v-if能不能一起使用</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue%E7%BB%84%E4%BB%B6%E7%9A%84%E7%94%9F%E5%91%BD%E5%91%A8%E6%9C%9F"><span class="toc-number">2.6.</span> <span class="toc-text">vue组件的生命周期</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E7%BB%84%E4%BB%B6%E6%B7%B1%E5%85%A5"><span class="toc-number">2.7.</span> <span class="toc-text">组件深入</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue2%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">2.8.</span> <span class="toc-text">vue2组件间通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E4%BD%9C%E7%94%A8%E5%9F%9F%E6%8F%92%E6%A7%BD"><span class="toc-number">2.9.</span> <span class="toc-text">作用域插槽</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue3%E7%BB%84%E4%BB%B6%E9%97%B4%E9%80%9A%E4%BF%A1%E6%96%B9%E5%BC%8F"><span class="toc-number">2.10.</span> <span class="toc-text">vue3组件间通信方式</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#%E5%8C%BA%E5%88%ABMVVM%E4%B8%8EMVC"><span class="toc-number">2.11.</span> <span class="toc-text">区别MVVM与MVC</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.12.</span> <span class="toc-text">vue响应式数据原理</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#vue2%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.12.1.</span> <span class="toc-text">vue2的响应式数据原理</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#vue3%E7%9A%84%E5%93%8D%E5%BA%94%E5%BC%8F%E6%95%B0%E6%8D%AE%E5%8E%9F%E7%90%86"><span class="toc-number">2.12.2.</span> <span class="toc-text">vue3的响应式数据原理</span></a></li></ol></li><li class="toc-item toc-level-2"><a class="toc-link" href="#vue%E5%8F%8C%E5%90%91%E6%95%B0%E6%8D%AE%E7%BB%91%E5%AE%9A"><span class="toc-number">2.13.</span> <span class="toc-text">vue双向数据绑定</span></a></li><li class="toc-item toc-level-2"><a class="toc-link" href="#nextTick%E5%8E%9F%E7%90%86"><span class="toc-number">2.14.</span> <span class="toc-text">nextTick原理</span></a></li></ol></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>

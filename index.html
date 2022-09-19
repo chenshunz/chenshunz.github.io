@@ -1,9 +1,130 @@
-extends includes/layout.pug
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="极度简单."><meta name="renderer" content="webkit"><meta name="copyright" content="极度简单."><meta name="keywords" content="Onece || Aaras"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>Mr.One'ce Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
+  "use strict";
+  // rel=preload support test
+  if( !w.loadCSS ){
+    w.loadCSS = function(){};
+  }
+  // define on the loadCSS obj
+  var rp = loadCSS.relpreload = {};
+  // rel=preload feature support test
+  // runs once and returns a function for compat purposes
+  rp.support = (function(){
+    var ret;
+    try {
+      ret = w.document.createElement( "link" ).relList.supports( "preload" );
+    } catch (e) {
+      ret = false;
+    }
+    return function(){
+      return ret;
+    };
+  })();
 
-block content
-  include includes/recent-posts.pug
-  include includes/partial/page-nav.pug
-    
+  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
+  // then change that media back to its intended value on load
+  rp.bindMediaToggle = function( link ){
+    // remember existing media attr for ultimate state, or default to 'all'
+    var finalMedia = link.media || "all";
+
+    function enableStylesheet(){
+      link.media = finalMedia;
+    }
+
+    // bind load handlers to enable media
+    if( link.addEventListener ){
+      link.addEventListener( "load", enableStylesheet );
+    } else if( link.attachEvent ){
+      link.attachEvent( "onload", enableStylesheet );
+    }
+
+    // Set rel and non-applicable media type to start an async request
+    // note: timeout allows this to happen async to let rendering continue in IE
+    setTimeout(function(){
+      link.rel = "stylesheet";
+      link.media = "only x";
+    });
+    // also enable media after 3 seconds,
+    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
+    setTimeout( enableStylesheet, 3000 );
+  };
+
+  // loop through link elements in DOM
+  rp.poly = function(){
+    // double check this to prevent external calls from running
+    if( rp.support() ){
+      return;
+    }
+    var links = w.document.getElementsByTagName( "link" );
+    for( var i = 0; i < links.length; i++ ){
+      var link = links[ i ];
+      // qualify links to those with rel=preload and as=style attrs
+      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
+        // prevent rerunning on link
+        link.setAttribute( "data-loadcss", true );
+        // bind listeners to toggle media back
+        rp.bindMediaToggle( link );
+      }
+    }
+  };
+
+  // if unsupported, run the polyfill
+  if( !rp.support() ){
+    // run once at least
+    rp.poly();
+
+    // rerun poly on an interval until onload
+    var run = w.setInterval( rp.poly, 500 );
+    if( w.addEventListener ){
+      w.addEventListener( "load", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    } else if( w.attachEvent ){
+      w.attachEvent( "onload", function(){
+        rp.poly();
+        w.clearInterval( run );
+      } );
+    }
+  }
 
 
+  // commonjs
+  if( typeof exports !== "undefined" ){
+    exports.loadCSS = loadCSS;
+  }
+  else {
+    w.loadCSS = loadCSS;
+  }
+}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 6.1.0"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/1.webp"></div><!--.profile-saying
+  i.fa.fa-comment
+  .saying--><div class="cxo-profile-inner"><div class="profile-name">极度简单.</div><div class="profile-signature">既然不开心也是一天，开心也是一天，那为什么要不开心呢~</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 100vh;background-image: url(/img/intro/1.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.One'ce Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1>Mr.One'ce Blog</h1><h5>Welcome to my Blog!</h5><div class="intro-social"><a class="fa fa-github" href="//github.com/" target="_blank" title="github"></a><a class="fa fa-weibo" href="//www.weibo.com" target="_blank" title="weibo"></a><a class="fa fa-facebook" href="//www.facebook.com" target="_blank" title="facebook"></a><a class="fa fa-twitter" href="//twitter.com" target="_blank" title="twitter"></a><a class="fa fa-rss" href="/atom.xml" target="_blank" title="rss"></a></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><section id="recent-posts"><div class="recent-post-item"><div class="post-title"><a href="/2022/09/19/%E7%B2%BE%E8%AE%B2%E8%87%AA%E5%B7%B1%E7%90%86%E8%A7%A3/">no_title</a></div><div class="post-time"></div><div class="recent-post-content">js基础部分- 变量是什么？可变化的量，由变量名和变量值组成，名称是标识，值是可以变化的，一个变量对应一块小内存。拿var a = 1来说， a相当于这块内存的标识名称，用于查找这块内存，变量值就是1就是内存中保存的数据，可以通过访问a去找到这个数据
 
+- 基本类型变量与引用类型变量的区别是什么？基本数据类型数据存放在堆内存中，引用数据类型存放在堆内存中的是地址值，数据是存放在栈内存中，通过访问地址值去访问数据
+
+- 函数传参到底是值传递还是引用传递？1.函数调用时，是将实参变量的数据拷贝一份赋值给形参变量
+2.只是实参变量数据可能是基本数据类型，也可能是引用数据类型
+
+- 说说你对作用域和作 ...</div><div class="read-more"><a class="more" href="/2022/09/19/%E7%B2%BE%E8%AE%B2%E8%87%AA%E5%B7%B1%E7%90%86%E8%A7%A3/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2022/04/19/less/">less笔记</a></div><div class="post-time"></div><div class="recent-post-content">less常用的方法、ps：在less中分号是很重要的。
+一、变量多次重复相同的值，通常在您的样式表中可看到。不用多次使用相同的值，可以使用变量。它使代码的维护更容易，并且可以从单个位置控制这些值。
+变量作为样式的值使用
+123456@w:100px;#div &#123;    width: @w;    height: @w;    background-color: aqua;&#125;
+
+变量作为变量的名字--@{变量名}
+1234567@bg : background;#bg&#123;    width: 300px;    height: 300px;    @&#123;bg& ...</div><div class="read-more"><a class="more" href="/2022/04/19/less/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2022/04/15/jQuery/">JQuery笔记</a></div><div class="post-time"></div><div class="recent-post-content">一、JQuery​    干什么: 一个优秀的js函数库，官网：http://jquery.com/
+​    jQuery简介：
+​        *    是在2006年,美国人约翰创建的,jquery是一个js的文件
+    \*    目的:因为以后工作中,会有一些老项目,就是用jquery来编写的,jquery可以认
+
+    \*    为是前端人员必会的,学习它也是为了让我们更好的理解js,可以把经历放在项目
+
+​        *    的业务逻辑上,而不用过多的操心兼容性问题,jq可以解决95%兼容性问题
+​    *  Why?
+   *    HTML元素选取(选择器)
+ ...</div><div class="read-more"><a class="more" href="/2022/04/15/jQuery/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2022/04/11/js%E9%AB%98%E7%BA%A7/">Js高级</a></div><div class="post-time"></div><div class="recent-post-content">一、选择排序最主要的就是内层循环的时候，是由i+1开始
+12345678910111213141516171819202122232425&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;    &lt;meta charset=&quot;UTF-8&quot;&gt;    &lt;meta http-equiv=&quot;X-UA-Compatible&quot; content=&quot;IE=edge&quot;&gt;    &lt;meta name=&quot;viewport&quot; co ...</div><div class="read-more"><a class="more" href="/2022/04/11/js%E9%AB%98%E7%BA%A7/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2022/04/10/BOM%E7%AC%94%E8%AE%B0/">BOM笔记</a></div><div class="post-time"></div><div class="recent-post-content">一、BOMBOM是 browser object model 的缩写，简称浏览器对象模型 ，提供了独立于内容而与浏览器窗口进行交互的对象；
+window对象，是JS的最顶层对象，其他的BOM对象都是window对象的属性
+1、locationLocation 对象包含有关当前 URL 的信息。Location 对象是 Window 对象的一个部分，可通过 window.location 属性来访问。
+拓展：URL 统一资源定位系统（uniform resource locator）的组成（了解）
+1234567891011121314151617181920212223242526272829 ...</div><div class="read-more"><a class="more" href="/2022/04/10/BOM%E7%AC%94%E8%AE%B0/#more">ReadMore</a></div><hr></div><div class="recent-post-item"><div class="post-title"><a href="/2022/03/29/DOM%E7%AC%94%E8%AE%B0/">DOM笔记</a></div><div class="post-time"></div><div class="recent-post-content">一、DOM 的介绍1231.*当创建好一个页面并加载到浏览器时，DOM就悄然而生！！！，它会把网页文档（html页面）转换为一个文档对象，*主要功能是处理网页内容，dom就是操作页面中的元素！！！2.顶级对象是 document, 通过 document 提供的一系列方法能够获取到对应的元素，是一个DOM对象3.可以操作元素的样式、属性、内容
+
+二、获取元素的方法、事件的格式1234567891011121314151617181920212223//只能获取唯一id的元素，所以不带“s”document.getElementById() //获取元素的类名，可以批量获取所以带“s”，获取的元 ...</div><div class="read-more"><a class="more" href="/2022/03/29/DOM%E7%AC%94%E8%AE%B0/#more">ReadMore</a></div><hr></div></section><nav class="cxo-page-nav"><span class="page-number current">1</span></nav></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a target="_blank" rel="noopener" href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>
