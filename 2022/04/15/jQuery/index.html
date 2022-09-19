@@ -1,210 +1,23 @@
-<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"><meta name="author" content="极度简单."><meta name="renderer" content="webkit"><meta name="copyright" content="极度简单."><meta name="keywords" content="Onece || Aaras"><meta name="description" content="null"><meta name="Cache-Control" content="no-cache"><meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"><title>JQuery笔记 · Mr.One'ce Blog</title><link rel="stylesheet" href="/css/style.css?v=2018.7.9"><link rel="stylesheet" href="/css/animation.css?v=2018.7.9"><link rel="icon" href="/img/assets/favicon.ico"><link rel="stylesheet" href="https://cdn.bootcss.com/font-awesome/4.7.0/css/font-awesome.min.css?version=1.5.6"><!-- scripts--><script>(function( w ){
-  "use strict";
-  // rel=preload support test
-  if( !w.loadCSS ){
-    w.loadCSS = function(){};
-  }
-  // define on the loadCSS obj
-  var rp = loadCSS.relpreload = {};
-  // rel=preload feature support test
-  // runs once and returns a function for compat purposes
-  rp.support = (function(){
-    var ret;
-    try {
-      ret = w.document.createElement( "link" ).relList.supports( "preload" );
-    } catch (e) {
-      ret = false;
-    }
-    return function(){
-      return ret;
-    };
-  })();
+extends includes/layout.pug
 
-  // if preload isn't supported, get an asynchronous load by using a non-matching media attribute
-  // then change that media back to its intended value on load
-  rp.bindMediaToggle = function( link ){
-    // remember existing media attr for ultimate state, or default to 'all'
-    var finalMedia = link.media || "all";
-
-    function enableStylesheet(){
-      link.media = finalMedia;
-    }
-
-    // bind load handlers to enable media
-    if( link.addEventListener ){
-      link.addEventListener( "load", enableStylesheet );
-    } else if( link.attachEvent ){
-      link.attachEvent( "onload", enableStylesheet );
-    }
-
-    // Set rel and non-applicable media type to start an async request
-    // note: timeout allows this to happen async to let rendering continue in IE
-    setTimeout(function(){
-      link.rel = "stylesheet";
-      link.media = "only x";
-    });
-    // also enable media after 3 seconds,
-    // which will catch very old browsers (android 2.x, old firefox) that don't support onload on link
-    setTimeout( enableStylesheet, 3000 );
-  };
-
-  // loop through link elements in DOM
-  rp.poly = function(){
-    // double check this to prevent external calls from running
-    if( rp.support() ){
-      return;
-    }
-    var links = w.document.getElementsByTagName( "link" );
-    for( var i = 0; i < links.length; i++ ){
-      var link = links[ i ];
-      // qualify links to those with rel=preload and as=style attrs
-      if( link.rel === "preload" && link.getAttribute( "as" ) === "style" && !link.getAttribute( "data-loadcss" ) ){
-        // prevent rerunning on link
-        link.setAttribute( "data-loadcss", true );
-        // bind listeners to toggle media back
-        rp.bindMediaToggle( link );
-      }
-    }
-  };
-
-  // if unsupported, run the polyfill
-  if( !rp.support() ){
-    // run once at least
-    rp.poly();
-
-    // rerun poly on an interval until onload
-    var run = w.setInterval( rp.poly, 500 );
-    if( w.addEventListener ){
-      w.addEventListener( "load", function(){
-        rp.poly();
-        w.clearInterval( run );
-      } );
-    } else if( w.attachEvent ){
-      w.attachEvent( "onload", function(){
-        rp.poly();
-        w.clearInterval( run );
-      } );
-    }
-  }
-
-
-  // commonjs
-  if( typeof exports !== "undefined" ){
-    exports.loadCSS = loadCSS;
-  }
-  else {
-    w.loadCSS = loadCSS;
-  }
-}( typeof global !== "undefined" ? global : this ) );</script><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js" defer></script><script src="/js/main.js?v=2018.7.9" defer></script><!-- fancybox--><link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.css" as="style" onload="this.onload=null;this.rel='stylesheet'"><script src="https://cdnjs.cloudflare.com/ajax/libs/fancybox/3.2.5/jquery.fancybox.min.js" defer></script><!-- busuanzi--><script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script><meta name="generator" content="Hexo 6.1.0"></head><body><section class="profile-close" id="cxo-profile"><div class="profile-avatar"><i class="fa fa-caret-left"></i><img src="/img/assets/1.webp"></div><!--.profile-saying
-  i.fa.fa-comment
-  .saying--><div class="cxo-profile-inner"><div class="profile-name">极度简单.</div><div class="profile-signature">既然不开心也是一天，开心也是一天，那为什么要不开心呢~</div><div class="read-progress"></div></div></section><header id="cxo-intro" style="height: 100vh;background-image: url(/img/intro/1.png);"><nav id="cxo-intro-nav"><section><div class="intro-nav-title"><a href="/">Mr.One'ce Blog</a></div><div class="intro-nav-label-box"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div><i class="fa fa-bars intro-nav-menu"><div class="intro-nav-drop"><a href="/">Home</a><a href="/about/">About</a><a href="/archives/">Archives</a><a href="/tags/">Tags</a></div></i><div class="clear"></div></section></nav><h1 class="post-title">JQuery笔记</h1><div class="post-intros"><div class="post-intro-meta"><span class="post-intro-time"><i class="post-intro-calendar fa fa-calendar"></i><span>2022-04-15</span></span></div></div></header><article class="cxo-up" id="cxo-content-outer"><section id="cxo-content-inner"><article class="article-entry" id="post"><h1 id="一、JQuery"><a href="#一、JQuery" class="headerlink" title="一、JQuery"></a>一、JQuery</h1><p>​    干什么: 一个优秀的js函数库，官网：<a target="_blank" rel="noopener" href="http://jquery.com/">http://jquery.com/</a></p>
-<p>​    jQuery简介：</p>
-<p>​        *    是在2006年,美国人约翰创建的,jquery是一个js的文件</p>
-<pre><code>    \*    目的:因为以后工作中,会有一些老项目,就是用jquery来编写的,jquery可以认
-
-    \*    为是前端人员必会的,学习它也是为了让我们更好的理解js,可以把经历放在项目
-</code></pre>
-<p>​        *    的业务逻辑上,而不用过多的操心兼容性问题,jq可以解决95%兼容性问题</p>
-<p>​    *  Why?</p>
-<pre><code>   *    HTML元素选取(选择器)
-</code></pre>
-<p>​        *      HTML元素操作</p>
-<p>​        *     CSS操作</p>
-<p>​        *     HTML事件处理</p>
-<p>​        *     链式调用 （重点）</p>
-<p>​        *     读写合一 （重点）</p>
-<p>​    *  How?</p>
-<p>​        *     1.引入jQuery库</p>
-<p>​        *     2.使用jQuery: jQuery核心函数  jQuery核心对象</p>
-<p>​        *     3.区别2种js库文件: 开发版(源码版)  生产版(压缩版)</p>
-<p>​        *     4.区别2种引用js库的方式: 服务器本地库</p>
-<p>​        *       CDN远程库 <a target="_blank" rel="noopener" href="https://www.bootcdn.cn/">https://www.bootcdn.cn/</a></p>
-<p>​    jQuery的优点：</p>
-<p>​      使用简单方便 – 宗旨：Write Less, Do More。写得少，做得多。吃得少干得多。</p>
-<p>​      jQuery能做的js能做，js能做的jQuery也能做，</p>
-<p>​      但是jquery简单、易懂、兼容性好（解决了几乎所有的兼容性问题）。</p>
-<p>​      链式编程</p>
-<p>​      隐式迭代(隐式遍历):可以不用循环遍历对dom操作</p>
-<p>​      读写合一</p>
-<h3 id="跟原生比："><a href="#跟原生比：" class="headerlink" title="跟原生比："></a>跟原生比：</h3><p> 原生版</p>
-<p>  需要将所有的dom元素以及相关的资源（img、css、js、font、音频、视频…）全部加载完毕之后才来执行的事件回调函数</p>
-<p>  window.onload &#x3D; function () {}</p>
-<p>  jQuery版</p>
-<p>  只需要将所有的dom元素加载完毕之后就会执行这个函数</p>
-<p>  $(function () {}）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">// $一定是一个函数</span><br><span class="line">// $()   fun()</span><br><span class="line"></span><br><span class="line">// $(function()&#123;&#125;)  //fun(function()&#123;&#125;)  function()&#123;&#125;是作为$这个函数的实参，也是回调函数</span><br><span class="line"></span><br><span class="line">// $(&#x27;#btn2&#x27;)  返回结果：元素对象</span><br><span class="line"></span><br><span class="line">// $(&#x27;#btn2&#x27;).click  这个元素对象中一定有一个属性叫click</span><br><span class="line"></span><br><span class="line">// $(&#x27;#btn2&#x27;).click()  证明click属性的值一定是一个函数</span><br><span class="line"></span><br><span class="line">// $(&#x27;#btn2&#x27;).click(function()&#123;&#125;)  function()&#123;&#125;是作为函数的实参</span><br><span class="line"></span><br><span class="line">// 立即执行函数</span><br><span class="line">// (function () &#123;&#125;)();</span><br></pre></td></tr></table></figure>
-
-<h1 id="二、jQuery的两把利器"><a href="#二、jQuery的两把利器" class="headerlink" title="二、jQuery的两把利器"></a>二、jQuery的两把利器</h1><p><strong>1、jQuery核心函数</strong></p>
-<p> * 简称: jQuery函数($&#x2F;jQuery)</p>
-<p> * jQuery库向外直接暴露的就是$&#x2F;jQuery  暴露数据如果是直接暴露的，那么使用的时候直接使用即可。</p>
-<p> * 引入jQuery库后, 直接使用$即可</p>
-<p>  * 当函数用: $(xxx)</p>
-<p>  * 当对象用: $.xxx()  </p>
-<p><strong>2、jQuery核心对象</strong></p>
-<p> * 简称: jQuery对象</p>
-<p> * 得到jQuery对象: 执行jQuery函数返回的就是jQuery对象</p>
-<p> * 使用jQuery对象: $(‘选择器对象’).css()</p>
-<h3 id="作为一般函数调用：-param"><a href="#作为一般函数调用：-param" class="headerlink" title="作为一般函数调用：$(param)"></a>作为一般函数调用：$(param)</h3><p>1.参数为函数：当DOM加载完成后，执行此回调函数，window.onload和$(function(){}) 两个方式对比，是jq执行速度快</p>
-<p>2.参数为选择器字符串：查找所有匹配的标签，并将他们封装成jQuery对象。$(“选择器”)</p>
-<p>3.参数为DOM对象：将DOM对象封装成jQuery对象。$(dom对象)（括号内不用加引号）</p>
-<p>4.参数为html标签字符串（用的少）：创建标签对象并封装成jQuery对象</p>
-<p>5.js和jq可以共存在一个页面上，但是不能混用在一行代码上</p>
-<p>6.伪数组，其实是对象！！jq对象一般都是伪数组</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">//jq中没有自己的this指向，还是使用的js中的this指向</span><br><span class="line">console.log(this); //如果返回来的是标签本身，那么这个对象就是dom对象</span><br><span class="line"></span><br><span class="line">如何将dom对象转换成响应的jq对象</span><br><span class="line">console.log($(this)); //伪数组</span><br><span class="line"></span><br><span class="line">console.log(typeof $(this));  //object</span><br></pre></td></tr></table></figure>
-
-
-
-<h3 id="作为对象使用：-xxx"><a href="#作为对象使用：-xxx" class="headerlink" title="作为对象使用：$.xxx()"></a>作为对象使用：$.xxx()</h3><p>1.JQuery对象是一个包含所有匹配的任意多个dom元素的伪数组对象</p>
-<p>2.基本行为：</p>
-<p>​    size()&#x2F;length: 包含DOM元素个数</p>
-<p>​    [index]&#x2F;get(index) ：得到对应位置的DOM元素</p>
-<p>​    each():遍历包含的所有DOM元素</p>
-<p>ps：each既可以遍历数组、对象、还可以遍历DOM元素对象</p>
-<p>1.如果是数组或普通对象：$.each(对象名，function（下标，值）{})（下标和键名不能省略）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line">var arr2 = [</span><br><span class="line">    [1,2,3],</span><br><span class="line">    [4,5,6],</span><br><span class="line">    [7,8,9]</span><br><span class="line">]</span><br><span class="line"></span><br><span class="line">$.each(arr2,function(index,item)&#123;</span><br><span class="line">    $.each(item,function(i,v)&#123;</span><br><span class="line">        console.log(v);</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var obj = &#123;</span><br><span class="line">    name:&#x27;刚哥&#x27;,</span><br><span class="line">    age:45</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">$.each(obj,function(key,value)&#123;</span><br><span class="line">    //key表示的对象的键名</span><br><span class="line">    // console.log(key);</span><br><span class="line">    //value表示的对象的键值</span><br><span class="line">    console.log(value);</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<p>2.如果是DOM对象：$(“选择器对象”).each(function(下标,值){})（下标不能省略）</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">$(&#x27;button&#x27;).each(function(index,value)&#123;</span><br><span class="line">    //下标</span><br><span class="line">    // console.log(index);</span><br><span class="line">    //元素对象</span><br><span class="line">    // console.log(value);</span><br><span class="line">    //jq对象</span><br><span class="line">    // console.log($(value));</span><br><span class="line">    console.log($(value).html());</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-
-<h1 id="三、常用属性"><a href="#三、常用属性" class="headerlink" title="三、常用属性"></a>三、常用属性</h1><p>1、操作任意属性</p>
-<p>  attr()：读写合一</p>
-<p>如果传递的是一个参数：读，相当于getAttribute</p>
-<p>如果传递的是二个参数：写，相当于setAttribute</p>
-<p>ps：attr设置的属性值如果之前存在的话，则默认是覆盖，一般设置普通属性，也可以设置自定义属性（$(‘button’).attr(‘abc’,100)）</p>
-<p>  removeAttr()：移除属性</p>
-<p>  prop()：一般操作属性如果是布尔值之类的属性，则使用prop方法</p>
-<p> 复选框、单选按钮、下拉列表、readonly、disabled</p>
-<p>一般主要针对于的是选中类的属性的设置</p>
-<p>2、操作class属性</p>
-<p>  addClass()： 添加类名</p>
-<p>  removeClass()：移除类名</p>
-<p>3、操作HTML代码&#x2F;文本&#x2F;值</p>
-<p>  html()：读写合一，括号为空就是读，写的话在括号内加，记得加引号</p>
-<p>  val()（获取输入框的值，表单用）</p>
-<p>4、在jQuery对象中的元素对象数组中过滤出一部分元素来</p>
-<p>\1. first()：第一个元素</p>
-<p>\2. last()：最后一个元素</p>
-<p>\3. eq(index|-index) ：匹配元素的集合为指定的索引的哪一个元素。</p>
-<p>\4. filter(selector)：过滤出需要的元素</p>
-<p>\5. not(selector)：找到不为xxxx的元素</p>
-<p>5、查找子、父、兄弟标签</p>
-<p>children(): 获得匹配元素集合中元素的子元素，然后选择器选择性筛选</p>
-<p>find()：通过一个选择器，jQuery对象，得到当前匹配的元素集合中每个元素的后代，不区分层级</p>
-<p>parent()&#x2F;parents():找上一级父标签&#x2F;找所有父标签</p>
-<p>prevAll()&#x2F;prev(): ：查找所有符合选择器或符合参数前面的标签&#x2F;prev方法就不要添加参数了，因为加了这个参数要严格了，有可能布局发送了变化，就影响了</p>
-<p>“+” 是前面标签的下一个兄弟标签</p>
-<p>console.log($(‘li#cc + ‘));</p>
-<p>“~” 是前面标签下所有兄弟标签</p>
-<p> console.log($(‘li#cc ~ li’));</p>
-<p>siblings()：是获取所有除自己以外的兄弟标签，不分前后</p>
-<p>toggleClass()：开关样式，你有我删，你没有我加</p>
-<p>append():&#x2F;appendTo():内部默认追加在后</p>
-<p>prepend()&#x2F;prependTo() ： 内部默认追加在前</p>
-<p>Before()&#x2F;insertBefore(): 外部默认追加在前</p>
-<p>after()&#x2F;insertAfter(): 外部默认追加在后</p>
-<p>replaceWith()&#x2F;replaceAll():新all旧，旧with新</p>
-<p>remove():不添加参数移除所有</p>
-<p>empty();是将这个父元素中的所有的普通文本以及子元素全部删除掉</p>
-<h1 id="四、元素的尺寸"><a href="#四、元素的尺寸" class="headerlink" title="四、元素的尺寸"></a>四、元素的尺寸</h1><figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">1. 内容尺寸  content-box</span><br><span class="line">  height(): height</span><br><span class="line">  width(): width</span><br><span class="line">2. 内部尺寸  content-box + padding-box</span><br><span class="line">  innerHeight(): height+padding</span><br><span class="line">  innerWidth(): width+padding</span><br><span class="line">3. 外部尺寸  content-box + padding-box + border-box  </span><br><span class="line">  outerHeight(false/true): height+padding+border  如果是true, 加上margin</span><br><span class="line">  outerWidth(false/true): width+padding+border 如果是true, 加上margin</span><br></pre></td></tr></table></figure>
-
-</article><!-- lincense--><div class="license-wrapper"><p> <span>Author:  </span><a href="http://example.com">极度简单.</a></p><p> <span>Link:  </span><a href="http://example.com/2022/04/15/jQuery/">http://example.com/2022/04/15/jQuery/</a></p><p> <span>Copyright:  </span><span>All articles in this blog are licensed under <a rel="license noopener" target="_blank" href="https://creativecommons.org/licenses/by-nc-nd/3.0">CC BY-NC-SA 3.0</a> unless stating additionally.</span></p></div><div class="post-paginator"><a class="prevSlogan" href="/2022/04/19/less/" title="less笔记"><span>< PreviousPost</span><br><span class="prevTitle">less笔记</span></a><a class="nextSlogan" href="/2022/04/11/js%E9%AB%98%E7%BA%A7/" title="Js高级"><span>NextPost ></span><br><span class="nextTitle">Js高级</span></a><div class="clear"></div></div><div id="comment"></div></section></article><footer id="cxo-footer-outer"><div id="cxo-footer-inner"><p class="footer-container"><span>Site by </span><a target="_blank" rel="noopener" href="http://hexo.io"><span>Hexo</span></a><span> | theme </span><a target="_blank" rel="noopener" href="https://github.com/Longlongyu/hexo-theme-Cxo"><span>Cxo</span></a></p><i class="fa fa-user"> </i><span id="busuanzi_value_site_uv"></span><span> | </span><i class="fa fa-eye"> </i><span id="busuanzi_value_site_pv"></span></div></footer><!-- catelog--><div class="toc-wrapper" style="top: 100vh;"><div class="toc-catalog"><i class="fa fa-list"> </i><span>CATALOG</span></div><ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%80%E3%80%81JQuery"><span class="toc-number">1.</span> <span class="toc-text">一、JQuery</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E8%B7%9F%E5%8E%9F%E7%94%9F%E6%AF%94%EF%BC%9A"><span class="toc-number">1.0.1.</span> <span class="toc-text">跟原生比：</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%BA%8C%E3%80%81jQuery%E7%9A%84%E4%B8%A4%E6%8A%8A%E5%88%A9%E5%99%A8"><span class="toc-number">2.</span> <span class="toc-text">二、jQuery的两把利器</span></a><ol class="toc-child"><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E4%B8%80%E8%88%AC%E5%87%BD%E6%95%B0%E8%B0%83%E7%94%A8%EF%BC%9A-param"><span class="toc-number">2.0.1.</span> <span class="toc-text">作为一般函数调用：$(param)</span></a></li><li class="toc-item toc-level-3"><a class="toc-link" href="#%E4%BD%9C%E4%B8%BA%E5%AF%B9%E8%B1%A1%E4%BD%BF%E7%94%A8%EF%BC%9A-xxx"><span class="toc-number">2.0.2.</span> <span class="toc-text">作为对象使用：$.xxx()</span></a></li></ol></li></ol></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E4%B8%89%E3%80%81%E5%B8%B8%E7%94%A8%E5%B1%9E%E6%80%A7"><span class="toc-number">3.</span> <span class="toc-text">三、常用属性</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#%E5%9B%9B%E3%80%81%E5%85%83%E7%B4%A0%E7%9A%84%E5%B0%BA%E5%AF%B8"><span class="toc-number">4.</span> <span class="toc-text">四、元素的尺寸</span></a></li></ol></div><!-- top--><i class="fa fa-arrow-up close" id="go-up" aria-hidden="true"></i></body></html>
+block content
+  article#post.article-entry
+    != page.content
+  // lincense
+  if(theme.copyright.enable === true && page.copyright !== false)
+    .license-wrapper
+      p 
+        span Author:  
+        a(href=config.url)= config.author
+      p 
+        span Link:  
+        a(href=page.permalink)= page.permalink
+      p 
+        span Copyright:  
+        span!= theme.copyright.license
+  include includes/partial/post-nav.pug
+  #comment
+    include includes/comment/livere.pug
+    include includes/comment/disqus.pug
+    include includes/comment/changyan.pug
+    include includes/comment/gitment.pug
